@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="muse1" schema="public" type="PostgreSQL - 9.6.3">
+   <tables>
+      <table name="feature_types" numRows="59" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="feature_type" nullable="false" remarks="" size="2147483647" type="varchar">
+            <child column="feature_type" foreignKey="fk_features_feature_types" implied="false" onDeleteCascade="false" table="features"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="description" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="created_by" nullable="true" remarks="If user created, who added it" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="3" name="created_on" nullable="false" remarks="" size="29" type="timestamp"/>
+         <primaryKey column="feature_type" sequenceNumberInPK="1"/>
+         <index name="pk_feature_types" unique="true">
+            <column ascending="true" name="feature_type"/>
+         </index>
+      </table>
+      <table name="go_codes" numRows="46327" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="go_code" nullable="false" remarks="" size="2147483647" type="varchar">
+            <child column="go_code" foreignKey="fk_go_codes_go_codes" implied="false" onDeleteCascade="false" table="go_codes"/>
+            <child column="child" foreignKey="fk_go_dag_0" implied="false" onDeleteCascade="false" table="go_dag"/>
+            <child column="parent" foreignKey="fk_go_dag" implied="false" onDeleteCascade="false" table="go_dag"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="go_name" nullable="false" remarks="" size="300" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="go_namespace" nullable="false" remarks="" size="100" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="go_def" nullable="false" remarks="" size="3000" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="obsolete" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="5" name="alternate_ids" nullable="true" remarks="" size="2147483647" type="_text"/>
+         <column autoUpdated="false" digits="0" id="6" name="replaced_by" nullable="true" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="go_version" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <primaryKey column="go_code" sequenceNumberInPK="1"/>
+         <index name="pk_go_codes" unique="true">
+            <column ascending="true" name="go_code"/>
+         </index>
+         <index name="idx_go_codes" unique="false">
+            <column ascending="true" name="replaced_by"/>
+         </index>
+      </table>
+      <table name="go_dag" numRows="75636" remarks="The DAG edges for the go ontology" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="parent" nullable="false" remarks="" size="2147483647" type="varchar">
+            <parent column="go_code" foreignKey="fk_go_dag" implied="false" onDeleteCascade="false" table="go_codes"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="child" nullable="false" remarks="" size="2147483647" type="varchar">
+            <parent column="go_code" foreignKey="fk_go_dag_0" implied="false" onDeleteCascade="false" table="go_codes"/>
+         </column>
+         <primaryKey column="parent" sequenceNumberInPK="1"/>
+         <primaryKey column="child" sequenceNumberInPK="2"/>
+         <index name="idx_go_dag" unique="true">
+            <column ascending="true" name="parent"/>
+            <column ascending="true" name="child"/>
+         </index>
+         <index name="idx_go_dag_0" unique="false">
+            <column ascending="true" name="parent"/>
+         </index>
+         <index name="idx_go_dag_1" unique="false">
+            <column ascending="true" name="child"/>
+         </index>
+      </table>
+      <table name="schema_status" numRows="1" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="tier1_schema" nullable="false" remarks="Name of the schema" size="100" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="1" name="status" nullable="false" remarks="" size="2147483647" type="account_type"/>
+         <primaryKey column="tier1_schema" sequenceNumberInPK="1"/>
+         <index name="pk_schema_status" unique="true">
+            <column ascending="true" name="tier1_schema"/>
+         </index>
+      </table>
+      <table name="tracrrna" numRows="1" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('tracrrna_tracrrna_id_seq1'::regclass)" digits="0" id="0" name="tracrrna_id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="tracrrna_id" foreignKey="fk_sgrna_tracrrna" implied="false" onDeleteCascade="false" table="sgrna"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="nt_seq" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="2" name="cas_protein" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <primaryKey column="tracrrna_id" sequenceNumberInPK="1"/>
+         <index name="pk_tracrrna" unique="true">
+            <column ascending="true" name="tracrrna_id"/>
+         </index>
+      </table>
+   </tables>
+</database>

@@ -1,0 +1,11 @@
+organism
+subfeatures
+sgrna
+interactions
+go_codes
+positions
+full_sequences
+cog_codes
+pam_sites
+features
+scaffolds

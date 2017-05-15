@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="muse1" schema="mg1655" type="PostgreSQL - 9.6.3">
+   <tables>
+      <table name="cog_codes" numRows="8044" remarks="" schema="mg1655" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="feature_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="feature_id" foreignKey="fk_cog_codes" implied="false" onDeleteCascade="true" table="features"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="cog_code" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <primaryKey column="feature_id" sequenceNumberInPK="1"/>
+         <primaryKey column="cog_code" sequenceNumberInPK="2"/>
+         <index name="idx_cog_codes" unique="true">
+            <column ascending="true" name="feature_id"/>
+            <column ascending="true" name="cog_code"/>
+         </index>
+         <index name="idx_cog_codes_0" unique="false">
+            <column ascending="true" name="feature_id"/>
+         </index>
+      </table>
+      <table name="features" numRows="77209" remarks="" schema="mg1655" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('mg1655.features_feature_id_seq4'::regclass)" digits="0" id="0" name="feature_id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="feature_id" foreignKey="fk_cog_codes" implied="false" onDeleteCascade="true" table="cog_codes"/>
+            <child column="feature_id" foreignKey="fk_go_codes_0" implied="false" onDeleteCascade="true" table="go_codes"/>
+            <child column="feature_id" foreignKey="fk_interactions" implied="false" onDeleteCascade="true" table="interactions"/>
+            <child column="regulator_id" foreignKey="fk_interactions_0" implied="false" onDeleteCascade="true" table="interactions"/>
+            <child column="feature_id" foreignKey="fk_position" implied="false" onDeleteCascade="true" table="positions"/>
+            <child column="child" foreignKey="fk_subfeatures_0" implied="false" onDeleteCascade="false" table="subfeatures"/>
+            <child column="parent" foreignKey="fk_subfeatures" implied="false" onDeleteCascade="false" table="subfeatures"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="scaffold_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="scaffold_id" foreignKey="fk_features" implied="false" onDeleteCascade="false" table="scaffolds"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="feature_group" nullable="false" remarks="Used to group all features from a gene or other umbrella term&#10;e.g. all features for gene folA will be tagged here as 'folA'" size="100" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="feature_type" nullable="false" remarks="" size="100" type="varchar">
+            <parent column="feature_type" foreignKey="fk_features_feature_types" implied="false" onDeleteCascade="false" table="feature_types"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="4" name="strand" nullable="false" remarks="+ or -" size="1" type="bpchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="feature_name" nullable="false" remarks="" size="100" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="feature_desc" nullable="true" remarks="" size="5000" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="synonyms" nullable="true" remarks="" size="2147483647" type="_text"/>
+         <column autoUpdated="false" digits="0" id="8" name="search_terms" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="9" name="essential" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="'{}'::jsonb" digits="0" id="10" name="db_xref" nullable="false" remarks="Ouside references, in the format&#10;key: reference name&#10;value: reference ID" size="2147483647" type="jsonb"/>
+         <column autoUpdated="false" digits="0" id="11" name="ec" nullable="true" remarks="" size="2147483647" type="_text"/>
+         <column autoUpdated="false" digits="0" id="12" name="function" nullable="true" remarks="" size="5000" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="13" name="products" nullable="true" remarks="" size="2147483647" type="_text"/>
+         <column autoUpdated="false" digits="0" id="14" name="binds" nullable="true" remarks="If relevant, what the feature binds to" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="15" name="coding" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="16" name="aa_seq" nullable="true" remarks="" size="10000" type="varchar"/>
+         <primaryKey column="feature_id" sequenceNumberInPK="1"/>
+         <index name="pk_sequences" unique="true">
+            <column ascending="true" name="feature_id"/>
+         </index>
+         <index name="idx_features" unique="false">
+            <column ascending="true" name="feature_group"/>
+         </index>
+         <index name="idx_features_0" unique="false">
+            <column ascending="true" name="feature_type"/>
+         </index>
+         <index name="idx_features_1" unique="false">
+            <column ascending="true" name="scaffold_id"/>
+         </index>
+         <index name="mg1655_trigram_idx" unique="false">
+            <column ascending="true" name="search_terms"/>
+         </index>
+      </table>
+      <table name="full_sequences" numRows="47" remarks="" schema="mg1655" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="scaffold_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="scaffold_id" foreignKey="fk_full_sequence_0" implied="false" onDeleteCascade="true" table="scaffolds"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="start" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="2" name="stop" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="3" name="sequence" nullable="false" remarks="" size="500000" type="varchar"/>
+         <index name="idx_full_sequence_0" unique="false">
+            <column ascending="true" name="scaffold_id"/>
+         </index>
+         <index name="idx_full_sequences" unique="false">
+            <column ascending="true" name="start"/>
+         </index>
+      </table>
+      <table name="go_codes" numRows="18902" remarks="" schema="mg1655" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="feature_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="feature_id" foreignKey="fk_go_codes_0" implied="false" onDeleteCascade="true" table="features"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="go_code" nullable="false" remarks="" size="25" type="varchar">
+            <parent column="go_code" foreignKey="fk_go_codes_go_codes" implied="false" onDeleteCascade="false" table="go_codes"/>
+         </column>
+         <primaryKey column="feature_id" sequenceNumberInPK="1"/>
+         <primaryKey column="go_code" sequenceNumberInPK="2"/>
+         <index name="idx_go_codes" unique="true">
+            <column ascending="true" name="feature_id"/>
+            <column ascending="true" name="go_code"/>
+         </index>
+         <index name="idx_go_codes_0" unique="false">
+            <column ascending="true" name="feature_id"/>
+         </index>
+         <index name="idx_go_codes_1" unique="false">
+            <column ascending="true" name="go_code"/>
+         </index>
+      </table>
+      <table name="interactions" numRows="0" remarks="" schema="mg1655" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="feature_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="feature_id" foreignKey="fk_interactions" implied="false" onDeleteCascade="true" table="features"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="regulator_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="feature_id" foreignKey="fk_interactions_0" implied="false" onDeleteCascade="true" table="features"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="directionality" nullable="false" remarks="How regulation takes place&#10;+ : upregulation&#10;- : downregulation&#10;+/- : both, depending on context&#10;&#10;In this case, feature_id feature is what is being regulated by the regulator_id feature" size="3" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="interaction_type" nullable="false" remarks="What is interacting&#10;pp : protein/protein interaction&#10;pg : protein/gene&#10;ng : nucleotide/gene&#10;nn : nucleotide/nucleotide (e/x miRNA with mRNA)" size="2147483647" type="varchar"/>
+         <primaryKey column="feature_id" sequenceNumberInPK="1"/>
+         <primaryKey column="regulator_id" sequenceNumberInPK="2"/>
+         <index name="idx_interactions_1" unique="true">
+            <column ascending="true" name="feature_id"/>
+            <column ascending="true" name="regulator_id"/>
+         </index>
+         <index name="idx_interactions" unique="false">
+            <column ascending="true" name="feature_id"/>
+         </index>
+         <index name="idx_interactions_0" unique="false">
+            <column ascending="true" name="regulator_id"/>
+         </index>
+      </table>
+      <table name="organism" numRows="1" remarks="" schema="mg1655" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="organism" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="1" name="strain" nullable="true" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="translation_table" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" digits="0" id="3" name="mitochondrial_translation_table" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" digits="0" id="4" name="refseq" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="5" name="biocyc_id" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="6" name="created_on" nullable="false" remarks="" size="29" type="timestamp"/>
+      </table>
+      <table name="pam_sites" numRows="542070" remarks="All the pam sites within the genome" schema="mg1655" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('mg1655.pam_sites_pam_site_id_seq3'::regclass)" digits="0" id="0" name="pam_site_id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="pam_site_id" foreignKey="fk_sgrna" implied="false" onDeleteCascade="true" table="sgrna"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="pam_seq" nullable="false" remarks="Sequence of the pam site (NRG, NGG, etc)" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="spacer" nullable="false" remarks="" size="40" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="scaffold_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="scaffold_id" foreignKey="fk_pam_site_0" implied="false" onDeleteCascade="true" table="scaffolds"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="4" name="pos" nullable="false" remarks="Always relative to FWD (+) strand" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="5" name="strand" nullable="false" remarks="" size="1" type="bpchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="scores" nullable="false" remarks="" size="2147483647" type="jsonb"/>
+         <column autoUpdated="false" digits="0" id="7" name="pam_type" nullable="false" remarks="Type of PAM system used, (1,2,5)" size="5" type="int2"/>
+         <column autoUpdated="false" digits="0" id="8" name="pam_hits" nullable="false" remarks="Number of sites hit by spacer sequence during BLAST search" size="10" type="int4"/>
+         <column autoUpdated="false" digits="17" id="9" name="gc_content" nullable="false" remarks="GC content of the spacer" size="17" type="float8"/>
+         <column autoUpdated="false" digits="0" id="10" name="target_sequence" nullable="true" remarks="full targeting sequence for CRISPR enzyme" size="200" type="varchar"/>
+         <primaryKey column="pam_site_id" sequenceNumberInPK="1"/>
+         <index name="pk_pam_sites" unique="true">
+            <column ascending="true" name="pam_site_id"/>
+         </index>
+         <index name="idx_pam_site" unique="false">
+            <column ascending="true" name="pam_type"/>
+         </index>
+         <index name="idx_pam_site_0" unique="false">
+            <column ascending="true" name="pos"/>
+         </index>
+         <index name="idx_pam_site_2" unique="false">
+            <column ascending="true" name="scaffold_id"/>
+         </index>
+      </table>
+      <table name="positions" numRows="77299" remarks="" schema="mg1655" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="feature_id" nullable="false" remarks="Allows for both contiguous and non-contiguous features" size="19" type="int8">
+            <parent column="feature_id" foreignKey="fk_position" implied="false" onDeleteCascade="true" table="features"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="start" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="2" name="stop" nullable="false" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="3" name="frameshift" nullable="false" remarks="If coding, how many bases to shift before starting translation of the given segment" size="5" type="int2"/>
+         <primaryKey column="feature_id" sequenceNumberInPK="1"/>
+         <primaryKey column="start" sequenceNumberInPK="2"/>
+         <primaryKey column="stop" sequenceNumberInPK="3"/>
+         <index name="idx_position_0" unique="true">
+            <column ascending="true" name="feature_id"/>
+            <column ascending="true" name="start"/>
+            <column ascending="true" name="stop"/>
+         </index>
+         <index name="idx_position" unique="false">
+            <column ascending="true" name="feature_id"/>
+         </index>
+         <index name="idx_position_1" unique="false">
+            <column ascending="true" name="start"/>
+            <column ascending="true" name="stop"/>
+         </index>
+      </table>
+      <table name="scaffolds" numRows="1" remarks="" schema="mg1655" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('mg1655.scaffolds_scaffold_id_seq4'::regclass)" digits="0" id="0" name="scaffold_id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="scaffold_id" foreignKey="fk_features" implied="false" onDeleteCascade="false" table="features"/>
+            <child column="scaffold_id" foreignKey="fk_full_sequence_0" implied="false" onDeleteCascade="true" table="full_sequences"/>
+            <child column="scaffold_id" foreignKey="fk_pam_site_0" implied="false" onDeleteCascade="true" table="pam_sites"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="scaffold_name" nullable="false" remarks="" size="100" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="scaffold_desc" nullable="true" remarks="" size="5000" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="circular" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="4" name="scaffold_len" nullable="false" remarks="" size="19" type="int8"/>
+         <primaryKey column="scaffold_id" sequenceNumberInPK="1"/>
+         <index name="pk_scaffold" unique="true">
+            <column ascending="true" name="scaffold_id"/>
+         </index>
+      </table>
+      <table name="sgrna" numRows="0" remarks="" schema="mg1655" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('mg1655.sgrna_sgrna_id_seq4'::regclass)" digits="0" id="0" name="sgrna_id" nullable="false" remarks="" size="19" type="bigserial"/>
+         <column autoUpdated="false" digits="0" id="1" name="pam_site_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="pam_site_id" foreignKey="fk_sgrna" implied="false" onDeleteCascade="true" table="pam_sites"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="tracrrna_id" nullable="false" remarks="tracrRNA used for folding and calculations" size="19" type="int8">
+            <parent column="tracrrna_id" foreignKey="fk_sgrna_tracrrna" implied="false" onDeleteCascade="false" table="tracrrna"/>
+         </column>
+         <column autoUpdated="false" digits="17" id="3" name="deltag" nullable="false" remarks="deltaG of folded sgRNA" size="17" type="float8"/>
+         <column autoUpdated="false" digits="17" id="4" name="gc_content" nullable="false" remarks="" size="17" type="float8"/>
+         <column autoUpdated="false" digits="17" id="5" name="g_content" nullable="false" remarks="" size="17" type="float8"/>
+         <column autoUpdated="false" digits="0" id="6" name="structure_count" nullable="true" remarks="" size="10" type="int4"/>
+         <primaryKey column="sgrna_id" sequenceNumberInPK="1"/>
+         <index name="pk_sgrna" unique="true">
+            <column ascending="true" name="sgrna_id"/>
+         </index>
+         <index name="idx_sgrna" unique="false">
+            <column ascending="true" name="tracrrna_id"/>
+         </index>
+         <index name="idx_sgrna_0" unique="false">
+            <column ascending="true" name="pam_site_id"/>
+         </index>
+      </table>
+      <table name="subfeatures" numRows="67799" remarks="WE ONLY ALLOW ONE LAYER OF NESTING EXPLICITLY USING A TRIGGER." schema="mg1655" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="parent" nullable="false" remarks="" size="19" type="int8">
+            <parent column="feature_id" foreignKey="fk_subfeatures" implied="false" onDeleteCascade="false" table="features"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="child" nullable="false" remarks="" size="19" type="int8">
+            <parent column="feature_id" foreignKey="fk_subfeatures_0" implied="false" onDeleteCascade="false" table="features"/>
+         </column>
+         <primaryKey column="parent" sequenceNumberInPK="1"/>
+         <primaryKey column="child" sequenceNumberInPK="2"/>
+         <index name="idx_subfeatures" unique="true">
+            <column ascending="true" name="parent"/>
+            <column ascending="true" name="child"/>
+         </index>
+         <index name="idx_subfeatures_0" unique="false">
+            <column ascending="true" name="parent"/>
+         </index>
+         <index name="idx_subfeatures_1" unique="false">
+            <column ascending="true" name="child"/>
+         </index>
+      </table>
+   </tables>
+</database>
